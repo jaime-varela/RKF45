@@ -13,3 +13,7 @@ The program solves the system:
 dy_i(x_j)/dt = F_i(t, x_j, y_j)
 
 see the example for how this is implemented.
+
+To run the test enter the command:
+
+g++ -O3 -std=c++11 newton_test.cc
