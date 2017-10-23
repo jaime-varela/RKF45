@@ -3,6 +3,7 @@
 #include "rkf45.h"
 
 // Newtonion force.
+// all quantities in SI units.
 const double alpha = 1.32754125e20;
 double Force3D(int i, double t, std::valarray<double> & xv){
   double r;
