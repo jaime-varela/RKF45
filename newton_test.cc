@@ -8,23 +8,14 @@
 // all quantities in SI units.
 const double alpha = 1.32754125e20;
 double Force3D(int i, double t, const std::vector<double> & xv){
-  double r;
-  r = sqrt(xv[0]*xv[0]+xv[1]*xv[1]+xv[2]*xv[2]); 
-  switch(i) {
-  case 0:
-    return xv[3];
-  case 1:
-    return xv[4];
-  case 2:
-    return xv[5];
-  case 3:
-    return - (alpha*xv[0]) / (r*r*r);
-  case 4:
-    return -(alpha*xv[1]) / (r*r*r) ;
-  case 5:
-    return -(alpha*xv[2]) / (r*r*r) ;
+  if(i < 3)
+  {
+    // xv[3] = dr/dt,...
+    return xv[i+3];
   }
-  return 0.0;
+  double r;
+  r = sqrt(xv[0]*xv[0]+xv[1]*xv[1]+xv[2]*xv[2]);
+  return -(alpha*xv[i-3]) / (r*r*r);
 }
 
 int main(){
@@ -53,6 +44,14 @@ int main(){
   for(auto&& value : result)
     std::cout << value << ",";
   std::cout << std::endl;
+
+
+  result = Newton.driver(0.0,T,{0.0,AU,0.0,-V,0.0,0.0},1e-5,hi);
+  std::cout << "Checking initializer list ..." << std::endl;
+  for(auto&& value : result)
+    std::cout << value << ",";
+  std::cout << std::endl;
+
 
   return 0;
 }

@@ -24,24 +24,21 @@
 
 //CONSTANTS; TODO: make tables out of these humbers
 //TODO: think about if you want type info
-static double k21 = 1.0/4.0, k2t = 1.0/4.0;
-static double k31 = 3.0/32.0,k32 = 9.0/32.0, k3t = 3.0/8.0;
-static double k41 = 1932.0/2197.0,k42 = -7200.0/2197.0,k43 = 7296.0/2197.0, k4t = 12.0/13.0;
-static double k51 = 439.0/216.0,k52 = -8.0, k53 = 3680.0/513.0, k54 = -845.0/4104.0, k5t = 1.0;
-static double k61 = -8.0/27.0,k62 = 2.0,k63 = -3544.0/2565.0,k64 = 1859.0/4104.0,k65 = -11.0/40.0,k6t = 0.5;
-
-
-static double y41 = 25.0/216.0;
-static double y43 = 1408.0/2565.0;
-static double y44 = 2197.0/4104.0;
-static double y45 = -1.0/5.0;
-
-
-static double y51 = 16.0/135.0;
-static double y53 = 6656.0/12825.0;
-static double y54 = 28561.0/56430.0;
-static double y55 = -9.0/50.0;
-static double y56 = 2.0/55.0;
+typedef double constant_T;
+static constant_T k21 = 1.0/4.0, k2t = 1.0/4.0;
+static constant_T k31 = 3.0/32.0,k32 = 9.0/32.0, k3t = 3.0/8.0;
+static constant_T k41 = 1932.0/2197.0,k42 = -7200.0/2197.0,k43 = 7296.0/2197.0, k4t = 12.0/13.0;
+static constant_T k51 = 439.0/216.0,k52 = -8.0, k53 = 3680.0/513.0, k54 = -845.0/4104.0, k5t = 1.0;
+static constant_T k61 = -8.0/27.0,k62 = 2.0,k63 = -3544.0/2565.0,k64 = 1859.0/4104.0,k65 = -11.0/40.0,k6t = 0.5;
+static constant_T y41 = 25.0/216.0;
+static constant_T y43 = 1408.0/2565.0;
+static constant_T y44 = 2197.0/4104.0;
+static constant_T y45 = -1.0/5.0;
+static constant_T y51 = 16.0/135.0;
+static constant_T y53 = 6656.0/12825.0;
+static constant_T y54 = 28561.0/56430.0;
+static constant_T y55 = -9.0/50.0;
+static constant_T y56 = 2.0/55.0;
   
 
 namespace RungeKutta
@@ -53,9 +50,9 @@ namespace RungeKutta
   {
     NumT result =0;
     for(int i = 0; i < a.size();i++)
-      {
-        result += (a[i])*(a[i]);
-      }
+    {
+      result += (a[i])*(a[i]);
+    }
     return sqrt(result);
   }
 
