@@ -19,11 +19,11 @@ see the example for how this is implemented.
 
 ## Compilation
 
-To run the test enter the command:
+The code only compiles for compilers with c++20 support.  If you have gcc-10 the command to compile is:
 
-g++ -O3 -std=c++11 newton_test.cc
+g++-10 -O3 -std=c++20 newton_test.cpp
 
-To verify the output should be:
+To verify the output should be run './a.out' and the last line should be:
 
 -1.49956e+11,2.10468e+10,0,-4531.51,-29292.7,0,
 

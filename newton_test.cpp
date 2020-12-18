@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <iostream>
-#include "rkf45.h"
-
 #include <chrono>
+
+#include "rkf45.h"
 
 // Newtonion force.
 // all quantities in SI units.
@@ -45,8 +45,9 @@ int main(){
     std::cout << value << ",";
   std::cout << std::endl;
 
+  RungeKutta::RK45<double,int,std::vector<double>> Newton2(3*2,Force3D); 
 
-  result = Newton.driver(0.0,T,{0.0,AU,0.0,-V,0.0,0.0},1e-5,hi);
+  result = Newton2.driver(0.0,T,{0.0,AU,0.0,-V,0.0,0.0},1e-5,hi);
   std::cout << "Checking initializer list ..." << std::endl;
   for(auto&& value : result)
     std::cout << value << ",";
