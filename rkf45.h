@@ -14,9 +14,7 @@
     1. Fused multiply adds
     2. constant handling
     3. think about implementation
-    4. maybe use algorithms such as std::transform
-
-    https://en.cppreference.com/w/cpp/iterator#C.2B.2B20_iterator_concepts
+    4. Maybe use ranges
 
 */
 
@@ -24,25 +22,20 @@
 
 namespace RungeKutta
 {
-  //CONSTANTS; TODO: make tables out of these humbers
   //TODO: think about if you want type info
   typedef double constant_T;
-  static constant_T k21 = 1.0/4.0, k2t = 1.0/4.0;
-  static constant_T k31 = 3.0/32.0,k32 = 9.0/32.0, k3t = 3.0/8.0;
-  static constant_T k41 = 1932.0/2197.0,k42 = -7200.0/2197.0,k43 = 7296.0/2197.0, k4t = 12.0/13.0;
-  static constant_T k51 = 439.0/216.0,k52 = -8.0, k53 = 3680.0/513.0, k54 = -845.0/4104.0, k5t = 1.0;
-  static constant_T k61 = -8.0/27.0,k62 = 2.0,k63 = -3544.0/2565.0,k64 = 1859.0/4104.0,k65 = -11.0/40.0,k6t = 0.5;
-  static constant_T y41 = 25.0/216.0;
-  static constant_T y43 = 1408.0/2565.0;
-  static constant_T y44 = 2197.0/4104.0;
-  static constant_T y45 = -1.0/5.0;
-  static constant_T y51 = 16.0/135.0;
-  static constant_T y53 = 6656.0/12825.0;
-  static constant_T y54 = 28561.0/56430.0;
-  static constant_T y55 = -9.0/50.0;
-  static constant_T y56 = 2.0/55.0;
+  // intermediate step variables  
+  static constant_T kmult [15] = {1.0/4.0,
+                                  3.0/32.0,9.0/32.0,
+                                  1932.0/2197.0,-7200.0/2197.0,7296.0/2197.0,
+                                  439.0/216.0,-8.0,3680.0/513.0,-845.0/4104.0,
+                                  -8.0/27.0,2.0,-3544.0/2565.0,1859.0/4104.0,-11.0/40.0};
+  // y updates
+  static constant_T yupdate [9] = {25.0/216.0,1408.0/2565.0,2197.0/4104.0,-1.0/5.0
+                                  ,16.0/135.0,6656.0/12825.0,28561.0/56430.0,-9.0/50.0,2.0/55.0};
 
-
+  // variables used in time step
+  static constant_T ktstep [5] = {1.0/4.0,3.0/8.0,12.0/13.0,1.0,0.5};
   // ---------------- Begin Concepts ---------------------------
   template<class T>
   concept NumT = std::is_arithmetic<T>::value; 
@@ -103,37 +96,37 @@ namespace RungeKutta
           Fvec(yf,Tstep,h,k1);
           for(index i = 0;i < fDimSize;++i)
           {
-            YVALS[i] = yf[i] + k21*k1[i];
+            YVALS[i] = yf[i] + kmult[0]*k1[i];
           }
-          Fvec(YVALS, Tstep + k2t*h,h,k2);
+          Fvec(YVALS, Tstep + ktstep[0]*h,h,k2);
           for(index i = 0;i < fDimSize;++i)
           {
-            YVALS[i] = yf[i] + k31*k1[i] + k32*k2[i];
+            YVALS[i] = yf[i] + kmult[1]*k1[i] + kmult[2]*k2[i];
           }
-          Fvec(YVALS,Tstep + k3t*h,h,k3);
+          Fvec(YVALS,Tstep + ktstep[1]*h,h,k3);
           for(index i = 0;i < fDimSize;++i)
           {
-            YVALS[i] = yf[i] + k41*k1[i] + k42*k2[i] + k43*k3[i];
+            YVALS[i] = yf[i] + kmult[3]*k1[i] + kmult[4]*k2[i] + kmult[5]*k3[i];
           }
-          Fvec(YVALS,Tstep + k4t*h,h,k4);
+          Fvec(YVALS,Tstep + ktstep[2]*h,h,k4);
           for(index i = 0;i < fDimSize;++i)
           {
-            YVALS[i] = yf[i] + k51*k1[i] + k52*k2[i] + k53*k3[i] + k54*k4[i];
+            YVALS[i] = yf[i] + kmult[6]*k1[i] + kmult[7]*k2[i] + kmult[8]*k3[i] + kmult[9]*k4[i];
           }
-          Fvec(YVALS,Tstep + k5t*h,h,k5);
+          Fvec(YVALS,Tstep + ktstep[3]*h,h,k5);
           for(index i = 0;i < fDimSize;++i)
           {
-            YVALS[i] = yf[i] + k61*k1[i] + k62*k2[i] + k63*k3[i] + k64*k4[i] + k65*k5[i];
+            YVALS[i] = yf[i] + kmult[10]*k1[i] + kmult[11]*k2[i] + kmult[12]*k3[i] + kmult[13]*k4[i] + kmult[14]*k5[i];
           }
-          Fvec(YVALS,Tstep + k6t*h,h,k6);
+          Fvec(YVALS,Tstep + ktstep[4]*h,h,k6);
           for(index i = 0;i < fDimSize;++i)
           {
-            yf[i] = yf[i] + (y41)*k1[i] + (y43)*k3[i] + (y44)*k4[i] + (y45)*k5[i];
-            erres[i]=  (y51-y41)*k1[i] +
-  	        (y53-y43)*k3[i] +
-  	        (y54-y44)*k4[i] +
-  	        (y55-y45)*k5[i] +
-  	        (y56)*k6[i];
+            yf[i] = yf[i] + (yupdate[0])*k1[i] + (yupdate[1])*k3[i] + (yupdate[2])*k4[i] + (yupdate[3])*k5[i];
+            erres[i]=  (yupdate[4]-yupdate[0])*k1[i] +
+  	        (yupdate[5]-yupdate[1])*k3[i] +
+  	        (yupdate[6]-yupdate[2])*k4[i] +
+  	        (yupdate[7]-yupdate[3])*k5[i] +
+  	        (yupdate[8])*k6[i];
           }
 
           errestimate = err_norm(erres);
@@ -144,7 +137,7 @@ namespace RungeKutta
 	          h *=0.9*pow(errortol/errestimate,0.2);
             for(index i = 0;i < fDimSize;++i)
             {
-  	          yf[i] = yf[i] - (y41)*k1[i] - (y43)*k3[i] - (y44)*k4[i] - (y45)*k5[i];
+  	          yf[i] = yf[i] - (yupdate[0])*k1[i] - (yupdate[1])*k3[i] - (yupdate[2])*k4[i] - (yupdate[3])*k5[i];
             }
 	        }
           else
