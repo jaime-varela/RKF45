@@ -5,8 +5,9 @@
 #include <math.h>
 #include <algorithm>
 #include <vector>
-#include <concepts>
-#include <iterator>
+
+#include "rk45Concepts.h"
+#include "rk45Constants.h"
 /*
   TODO: 
 
@@ -21,35 +22,6 @@
 
 namespace RungeKutta
 {
-  //TODO: think about if you want type info
-  typedef double constant_T;
-  // intermediate step variables  
-  static constant_T kmult [15] = {1.0/4.0,
-                                  3.0/32.0,9.0/32.0,
-                                  1932.0/2197.0,-7200.0/2197.0,7296.0/2197.0,
-                                  439.0/216.0,-8.0,3680.0/513.0,-845.0/4104.0,
-                                  -8.0/27.0,2.0,-3544.0/2565.0,1859.0/4104.0,-11.0/40.0};
-  // y updates
-  static constant_T yupdate [9] = {25.0/216.0,1408.0/2565.0,2197.0/4104.0,-1.0/5.0
-                                  ,16.0/135.0,6656.0/12825.0,28561.0/56430.0,-9.0/50.0,2.0/55.0};
-
-  // variables used in time step
-  static constant_T ktstep [5] = {1.0/4.0,3.0/8.0,12.0/13.0,1.0,0.5};
-  // ---------------- Begin Concepts ---------------------------
-  template<class T>
-  concept NumT = std::is_arithmetic<T>::value; 
-
-  template<class T>
-  concept Index = std::is_integral<T>::value;
-
-  template<class container,class number>
-  concept CoordinateContainer = std::is_arithmetic<number>::value &&
-  requires(container A,number b) {
-    {A[0] < A[0]} -> std::same_as<bool>;
-    {A[0] + b} -> std::same_as<number>;
-  };
-
-  // ------------------- end concepts ------------------
   
   //error calculation function
   template<NumT number = double,Index index = int,CoordinateContainer<number> coords>
