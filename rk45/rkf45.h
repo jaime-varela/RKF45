@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <math.h>
 #include <algorithm>
-#include <functional>
 #include <vector>
 #include <concepts>
 #include <iterator>
@@ -155,7 +154,8 @@ namespace RungeKutta
     }
 
     private:
-      std::function<number(index,number,const coords&)> fDeriv;
+      //using function pointer as it's slightly more performant
+      number(*fDeriv)(index,number,const coords &);
       index fDimSize;
       /*
         computes k[i] = hv*F_i(T,x);
