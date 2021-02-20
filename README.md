@@ -27,4 +27,6 @@ To verify the output should be run './a.out' and the last line should be:
 
 -1.49956e+11,2.10468e+10,0,-4531.51,-29292.7,0,
 
+It's about 156 microseconds on my laptop see if I can get this down.
 
+Currently it's a factor of 1.44 times slower than GSL runtimes (see gcc example).  Working on getting this down.

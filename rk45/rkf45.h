@@ -16,6 +16,9 @@
     3. think about implementation
     4. Maybe use ranges
 
+
+    Optimization wise:
+    1. Figure out a way to analyze cache efficieny
 */
 
   
@@ -62,8 +65,8 @@ namespace RungeKutta
         number h = hi;
         do
         {
+          Tstep = tstep;//function eval time is h-step away from tstep.
           tstep += h;
-          Tstep = tstep-h;//function eval time is h-step away from tstep.
           Fvec(yf,Tstep,h,k1);
           for(index i = 0;i < fDimSize;++i)
           {
@@ -94,18 +97,17 @@ namespace RungeKutta
           {
             yf[i] = yf[i] + (yupdate[0])*k1[i] + (yupdate[1])*k3[i] + (yupdate[2])*k4[i] + (yupdate[3])*k5[i];
             erres[i]=  (yupdate[4]-yupdate[0])*k1[i] +
-  	        (yupdate[5]-yupdate[1])*k3[i] +
-  	        (yupdate[6]-yupdate[2])*k4[i] +
-  	        (yupdate[7]-yupdate[3])*k5[i] +
+  	        (yupdateDiff1)*k3[i] +
+  	        (yupdateDiff2)*k4[i] +
+  	        (yupdateDiff3)*k5[i] +
   	        (yupdate[8])*k6[i];
           }
 
           errestimate = err_norm(erres);
-          errortol = err;
-          if(errestimate/errortol > 1)
+          if(errestimate > err)
       	  {
 	          tstep -= h;
-	          h *=0.9*pow(errortol/errestimate,0.2);
+	          h *=0.9*pow(err/errestimate,0.2);
             for(index i = 0;i < fDimSize;++i)
             {
   	          yf[i] = yf[i] - (yupdate[0])*k1[i] - (yupdate[1])*k3[i] - (yupdate[2])*k4[i] - (yupdate[3])*k5[i];
@@ -113,7 +115,7 @@ namespace RungeKutta
 	        }
           else
           {
-	          h *=0.9*pow(errortol/errestimate,0.25);
+	          h *=0.95*pow(err/errestimate,0.25);
           }
           //final step
           if(tstep + h > tf)

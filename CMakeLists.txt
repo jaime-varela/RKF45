@@ -9,7 +9,7 @@ set(CMAKE_CXX_COMPILER "/usr/bin/g++-10")
 project("TemplatizedRungekuttaCPP20")
 
 
-#Bring the headers, such as Student.h into the project
+#This is what brinks rk45 into the project
 include_directories(rk45)
 
 
