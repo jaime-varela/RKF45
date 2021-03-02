@@ -25,8 +25,6 @@ int odefunc (double x, const double y[], double f[], void *params)
 }
 
 
-int * jac;
-
 int main ()
 {
     double AU = 1.496e11; // astronomical unit

@@ -9,7 +9,7 @@ set(CMAKE_CXX_COMPILER "/usr/bin/g++-10")
 project("TemplatizedRungekuttaCPP20")
 
 
-#This is what brinks rk45 into the project
+#This is what brings rk45 into the project
 include_directories(rk45)
 
 
@@ -22,3 +22,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -std=c++20")
 
 # add the executable
 add_executable(NewtonTester newton_test.cpp)
+
+# test directory
+add_subdirectory(tests)
