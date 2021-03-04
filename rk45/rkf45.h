@@ -37,6 +37,38 @@ namespace RungeKutta
     return sqrt(result);
   }
 
+//  method returns Nth power of A 
+  template<NumT number = double,Index index = int>
+  number integerRoot(number A, index N) 
+  { 
+    // intially guessing a random number between 
+    // 0 and 9 
+    number xPre = A/2.0; 
+  
+    //  smaller eps, denotes more accuracy 
+    number eps = 1e-6;
+  
+    // initializing difference between two 
+    // roots by INT_MAX 
+    number delX;
+  
+    //  xK denotes current value of x 
+    number xK; 
+  
+    //  loop untill we reach desired accuracy 
+    do 
+    { 
+        //  calculating current value from previous 
+        // value by newton's method 
+        xK = ((N - 1.0) * xPre + 
+              A/pow(xPre, N-1)) / (double)N; 
+        delX = abs(xK - xPre); 
+        xPre = xK; 
+    } while (delX > eps);   
+  
+    return xK; 
+  }
+
   using defaultFunctionPointer = double(*)(int,double,const std::vector<double>&);
 
   template<NumT number = double,
@@ -110,7 +142,8 @@ namespace RungeKutta
           if(errestimate > err)
       	  {
 	          tstep -= h;
-	          h *=0.9*pow(err/errestimate,0.2);
+            // TODO: get rid of this pow and replace with fift root
+	          h *=0.9* pow(err/errestimate,0.2);
             for(index i = 0;i < fDimSize;++i)
             {
   	          yf[i] = yf[i] - (yupdate[0])*k1[i] - (yupdate[1])*k3[i] - (yupdate[2])*k4[i] - (yupdate[3])*k5[i];
@@ -118,7 +151,7 @@ namespace RungeKutta
 	        }
           else
           {
-	          h *=0.95*pow(err/errestimate,0.25);
+	          h *=0.95*sqrt(sqrt(err/errestimate));
           }
           //final step
           if(tstep + h > tf)

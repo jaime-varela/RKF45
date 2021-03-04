@@ -60,7 +60,11 @@ int main ()
     totalDuration += duration;
     std::cout << "GSL runs" << std::endl;
     std::cout << totalDuration/Nruns << std::endl;
-
+    for(int j = 0 ; j < 6 ; j++)
+    {
+        std::cout << y0[j] << ",";
+    }
+    std::cout << std::endl;
     gsl_odeiv2_driver_free (d);
     return 0;
 }

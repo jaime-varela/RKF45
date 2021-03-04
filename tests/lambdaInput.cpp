@@ -31,9 +31,9 @@ TEST(BasicNewtonTest, LambdaCheck) {
     RungeKutta::RK45 Newton(3*2,myLambda);
     result = Newton.driver(0.0,T,y0,1e-5,hi);
 
-    ASSERT_NEAR(-149956413569.63306, result[0],1e-10);
-    ASSERT_NEAR(21046790566.038616, result[1],1e-10);
+    ASSERT_NEAR(-149956413569.63306/result[0], 1,1e-10);
+    ASSERT_NEAR(21046790566.038616/result[1],1,1e-10);
     ASSERT_NEAR(0, result[2],1e-10);
-    ASSERT_NEAR(-4531.5121133203666, result[3],1e-10);
+    ASSERT_NEAR(-4531.5121133203666/result[3],1,1e-10);
 
 }
