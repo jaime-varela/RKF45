@@ -25,7 +25,6 @@
 
 namespace RungeKutta
 {
-  
   //error calculation function
   template<NumT number = double,Index index = int,CoordinateContainer<number> coords>
   number err_norm(const coords& a)		
@@ -38,13 +37,17 @@ namespace RungeKutta
     return sqrt(result);
   }
 
-  template<NumT number = double,Index index= int,CoordinateContainer<number> coords = std::vector<double>>
+  using defaultFunctionPointer = double(*)(int,double,const std::vector<double>&);
+
+  template<NumT number = double,
+          Index index= int,
+          CoordinateContainer<number> coords = std::vector<double>,
+          DerivativeFunction<number,index,coords> derivativeFunc = defaultFunctionPointer>
   class RK45
   {
     public:
-      RK45(index numEqns,number(*F_i)(index,number,const coords &))
+      RK45(index numEqns,derivativeFunc F_i) : fDeriv(F_i)
       {
-        fDeriv = F_i;
         fDimSize = numEqns;
       }
 
@@ -128,8 +131,8 @@ namespace RungeKutta
     }
 
     private:
-      //using function pointer as it's slightly more performant
-      number(*fDeriv)(index,number,const coords &);
+      derivativeFunc fDeriv;
+
       index fDimSize;
       /*
         computes k[i] = hv*F_i(T,x);

@@ -36,8 +36,11 @@ Standard cmake commands
 
 <code>
 mkdir build
+
 cd build
+
 cmake ..
+
 make
 </code>
 
@@ -46,7 +49,7 @@ Will also run tests
 
 # Performance
 
-It's about 156 microseconds on my laptop see if I can get this down.
+It's about 160-180 microseconds on my laptop see if I can get this down.
 
-Currently it's a factor of 1.4 times slower than GSL runtimes (see gcc example).  Working on getting this down.
+Currently it's a factor of 1.36 times slower than GSL runtimes (see gcc example).  Working on getting this down.
 
