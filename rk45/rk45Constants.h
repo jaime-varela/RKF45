@@ -1,3 +1,5 @@
+#pragma once
+
 namespace RungeKutta
 {
   //TODO: think about if you want type info

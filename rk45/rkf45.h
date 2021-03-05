@@ -8,6 +8,7 @@
 
 #include "rk45Concepts.h"
 #include "rk45Constants.h"
+#include "rk45utils.h"
 /*
   TODO: 
 
@@ -25,49 +26,6 @@
 
 namespace RungeKutta
 {
-  //error calculation function
-  template<NumT number = double,Index index = int,CoordinateContainer<number> coords>
-  number err_norm(const coords& a)		
-  {
-    number result =0;
-    for(index i = 0; i < a.size();i++)
-    {
-      result += (a[i])*(a[i]);
-    }
-    return sqrt(result);
-  }
-
-//  method returns Nth power of A 
-  template<NumT number = double,Index index = int>
-  number integerRoot(number A, index N) 
-  { 
-    // intially guessing a random number between 
-    // 0 and 9 
-    number xPre = A/2.0; 
-  
-    //  smaller eps, denotes more accuracy 
-    number eps = 1e-6;
-  
-    // initializing difference between two 
-    // roots by INT_MAX 
-    number delX;
-  
-    //  xK denotes current value of x 
-    number xK; 
-  
-    //  loop untill we reach desired accuracy 
-    do 
-    { 
-        //  calculating current value from previous 
-        // value by newton's method 
-        xK = ((N - 1.0) * xPre + 
-              A/pow(xPre, N-1)) / (double)N; 
-        delX = abs(xK - xPre); 
-        xPre = xK; 
-    } while (delX > eps);   
-  
-    return xK; 
-  }
 
   using defaultFunctionPointer = double(*)(int,double,const std::vector<double>&);
 
@@ -142,8 +100,7 @@ namespace RungeKutta
           if(errestimate > err)
       	  {
 	          tstep -= h;
-            // TODO: get rid of this pow and replace with fift root
-	          h *=0.9* pow(err/errestimate,0.2);
+	          h *=0.9* integerRootApprox(err/errestimate,5);
             for(index i = 0;i < fDimSize;++i)
             {
   	          yf[i] = yf[i] - (yupdate[0])*k1[i] - (yupdate[1])*k3[i] - (yupdate[2])*k4[i] - (yupdate[3])*k5[i];
