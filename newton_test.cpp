@@ -56,7 +56,7 @@ int main(){
   auto t2 = std::chrono::high_resolution_clock::now();
   auto duration = std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count();
   totalDuration += duration;    
+  std::cout << "Total runs: " << Nruns << std::endl;
   std::cout << "Average duration run: " << totalDuration/Nruns << " microseconds" << std::endl;
-
   return 0;
 }
