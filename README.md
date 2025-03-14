@@ -1,12 +1,10 @@
 # General
 
-A re-write of an old, badly written, program using templates.  I plan to use this program to practice C++20 concepts, coroutines, and ranges.
+A re-write of an old, program using templates and concepts.  I plan to use this program to practice C++20 concepts, coroutines, and ranges. The plan is to create a general solver class which takes as input a Butcher Tableau dependency (as opposed to the current fixed constant routine).
 
-This quick program implements a Runge-Kutta-Fhelberg 
-method with a rel_err=0.  Essentially this is the GSL method gsl_odeiv2_step_rkf45
+The current program implements a Runge-Kutta-Fhelberg method with a rel_err=0.  Essentially this is the GSL method gsl_odeiv2_step_rkf45
 with rel_err = 0.
 
-Note, I still need to greatly refactor and optimize this program because it's mainly written to practice C++20 and use concepts (which is also in progress).
 
 # Usage
 
@@ -15,7 +13,8 @@ The program solves the system:
 ```
 dy_i(x_j)/dt = F_i(t, x_j, y_j)
 ```
-see the example for how this is implemented.
+
+see [this page](https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta%E2%80%93Fehlberg_method) for details.
 
 # Compilation
 
@@ -33,6 +32,8 @@ To verify the output should be run './a.out' and the last line should be:
 ```
 -1.49956e+11,2.10468e+10,0,-4531.51,-29292.7,0,
 ```
+
+The current test uses a gcc output to test but I should use an analytically solvable model to test against at some point.
 
 ## Cmake
 

@@ -1,8 +1,19 @@
 cmake_minimum_required(VERSION 3.19)
 
 # specify the compiler
-set(CMAKE_C_COMPILER "gcc-10")
-set(CMAKE_CXX_COMPILER "/usr/bin/g++-10")
+find_program(GCC_PATH NAMES gcc-13 gcc-12 gcc-11 gcc-10 gcc)
+if (GCC_PATH)
+    set(CMAKE_C_COMPILER "${GCC_PATH}" CACHE STRING "" FORCE)
+else()
+    message(FATAL_ERROR "No suitable GCC compiler found (10+)")
+endif()
+# Specify the C++ compiler
+find_program(GPP_PATH NAMES g++-13 g++-12 g++-11 g++-10 g++)
+if (GPP_PATH)
+    set(CMAKE_CXX_COMPILER "${GPP_PATH}" CACHE STRING "" FORCE)
+else()
+    message(FATAL_ERROR "No suitable G++ compiler found (10+)")
+endif()
 
 
 # set the project name

@@ -5,6 +5,7 @@
 #include <math.h>
 #include <algorithm>
 #include <vector>
+#include <ranges>
 
 #include "rk45Concepts.h"
 #include "rk45Constants.h"
@@ -12,16 +13,10 @@
 /*
   TODO: 
 
-    1. Fused multiply adds
-    2. constant handling
-    3. think about implementation
-    4. Maybe use ranges
+    1. Revamp everything to use a Butcher Tableau inherited class. This will allow one to use more methods than just the 45 method
+    2. Put reference formulas in the documentation and use "Solving Ordinary Differential Equations I: Nonstiff Problems" notation
 
-
-    Optimization wise:
-    1. Figure out a way to analyze cache efficieny
 */
-
   
 
 namespace RungeKutta
@@ -45,7 +40,16 @@ namespace RungeKutta
       {
         return fDimSize;
       }
-
+      /**
+       * @brief Solves the ODE to obtain y(t_f) given the initial condition.
+       *
+       * @param t0 initial time.
+       * @param tf desired time of solution.
+       * @param y0 the initial condition
+       * @param err error tolerance
+       * @param hi initial step size
+       * @return y(tf) for the initial condition.
+       */
       coords driver(number t0,number tf,const coords & y0,number err,number hi)
       {
         index DIM = fDimSize;
@@ -129,9 +133,9 @@ namespace RungeKutta
       */
       void Fvec(const coords& yvec, number T,number hv, coords& k) const
       {
-        for(index i = 0; i< fDimSize;i++)
+        for (auto i : std::views::iota(0, fDimSize)) 
         {
-          k[i] = hv*(fDeriv(i,T,yvec) );
+          k[i] = hv * fDeriv(i, T, yvec);
         }
       }
   };

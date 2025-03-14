@@ -36,6 +36,7 @@ int main(){
   result = Newton.driver(0.0,T,y0,1e-5,hi);
 
   // Print solution y_0(tf), y_1(tf) ...
+  std::cout << "Newton solution" << std::endl;
   for(auto&& value : result)
     std::cout << value << ",";
   std::cout << std::endl;
@@ -44,6 +45,7 @@ int main(){
 
   auto Nruns = 5000;
   auto totalDuration = 0;
+
   auto t1 = std::chrono::high_resolution_clock::now();
 
   for(int i = 0; i < Nruns; i++)
@@ -54,7 +56,7 @@ int main(){
   auto t2 = std::chrono::high_resolution_clock::now();
   auto duration = std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count();
   totalDuration += duration;    
-  std::cout << totalDuration/Nruns << std::endl;
+  std::cout << "Average duration run: " << totalDuration/Nruns << " microseconds" << std::endl;
 
   return 0;
 }
