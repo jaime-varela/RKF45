@@ -8,32 +8,15 @@ with rel_err = 0.
 
 # Usage
 
-The program solves the system:
+See `newton_test.cpp` for a basic example. The unit tests also have variations on the example. The RK45 class solves the system:
 
 ```
 dy_i(x_j)/dt = F_i(t, x_j, y_j)
 ```
 
-see [this page](https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta%E2%80%93Fehlberg_method) for details.
+using the [Runge–Kutta–Fehlberg method](https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta%E2%80%93Fehlberg_method).
 
 # Compilation
-
-
-## CLI
-
-The code only compiles for compilers with c++20 support.  If you have gcc-10 the command to compile is:
-
-```
-g++-10 -O3 -std=c++20 newton_test.cpp
-```
-
-To verify the output should be run './a.out' and the last line should be:
-
-```
--1.49956e+11,2.10468e+10,0,-4531.51,-29292.7,0,
-```
-
-The current test uses a gcc output to test but I should use an analytically solvable model to test against at some point.
 
 ## Cmake
 
@@ -46,7 +29,28 @@ cmake ..
 make
 ```
 
-Will also run tests
+Whcih will also run tests. To examine the tests with more detail, run the binaries in the `tests` directory.
+
+
+## CLI
+
+The code only compiles for compilers with c++20 support.  If you have gcc-10, or greater, the command to compile is:
+
+```
+g++-10 -O3 -std=c++20 newton_test.cpp -I rk45
+```
+
+To verify the output should be run './a.out' and the last line should be:
+
+```
+Newton solution
+-1.49956e+11,2.10468e+10,0,-4531.51,-29292.7,0,
+Total runs: 5000
+Average duration run: 70 microseconds
+```
+
+The current test uses a gcc output to test but I should use an analytically solvable model to test against at some point.
+
 
 
 # Performance
